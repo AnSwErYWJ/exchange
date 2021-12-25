@@ -1,13 +1,10 @@
 /*************************************************************************
-	> File Name: test.c
-	> Author: weijie.yuan
+	> File Name: app.c
+	> Author: answer
 	> Mail: yuanweijie1993@gmail.com
-	> Created Time: Thu 29 Nov 2018 03:54:42 PM CST
+	> Created Time: 2021年12月25日 星期六 13时22分17秒
  ************************************************************************/
 
-#include "ak_import.h"
-
 int main(void) {
-	printf("********** %s\n", AK_VERSION_TEXT);
 	return 0;
 }

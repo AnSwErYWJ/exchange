@@ -1,6 +1,6 @@
 /*************************************************************************
 	> File Name: channel_get.c
-	> Author: weijie.yuan
+	> Author: answer
 	> Mail: yuanweijie1993@gmail.com
 	> Created Time: Mon 21 Nov 2016 04:59:30 PM CST
  ************************************************************************/

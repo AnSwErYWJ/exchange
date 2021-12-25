@@ -1,24 +1,80 @@
-# 当前目录找不到依赖/目标文件时,去指定路径查找
-VPATH ?= .:..
+VPATH ?= .
 
-SRC := channel_merge.c #wav_2_pcm.c pcm_2_wav.c read_wavheader.c #channel_merge.c channel_separate.c channel_get.c channel_convert.c channel_merge.c
-ALL_SRC := $(SRC) ./buffer/buffer.c
-OBJS := $(ALL_SRC:.c=.o) # 加了:前面的变量不能使用后面的变量
-TARGET := $(SRC:.c= )
+#
+# build target
+#
+EXECUTABLE = exchange
+TARGET = $(EXECUTABLE)
 
-CC := gcc
-PLUS := g++
-RM := -rm -rf # -表示命令出错.继续执行,忽略错误.
-CPPFLAGS := -I ./ -I ./buffer/# C预处理参数,一般设置I
-CFLAGS := -Wall -O2 -m64 -D_GNU_SOURCE # 编译器参数,C使用
-CXXFLAGS := # C++使用
-LDFLAGS :=  # 链接器参数,如ld ,最好放在源文件之后.
+#
+# toolchains
+#
+CC  	:= gcc
+LD  	:= ld
+CPP 	:= cpp
+CXX 	:= g++
+AR  	:= ar
+AS  	:= as
+NM  	:= nm
+STRIP 	:= strip
+OBJCOPY := objcopy
+RM 		:= -rm -rf
 
+#
+# files or dirs
+#
+SRC_FILES :=
+SRC_FILES_EXCLUDE :=
+SRC_DIRS := src src/modules/merge src/modules/split src/modules/wave
+SRC_DIRS_EXCLUDE :=
+INCLUDE_DIRS := -Iinclude -Iinclude/modules/merge -Iinclude/modules/split -Iinclude/modules/wave
+
+#
+# flags
+#
+CFLAGS   := -Os -std=gnu99 -fvisibility=hidden -D_GNU_SOURCE -fPIC -fPIE
+CFLAGS   += -Wall -Wno-variadic-macros -Wno-format-zero-length -fstack-protector-all -ffunction-sections -fdata-sections
+CFLAGS   +=  $(INCLUDE_DIRS)
+CXXFLAGS := $(subst -std=gnu99,,$(CFLAGS))
+LDFLAGS  := -Wl,--gc-sections -pie
+
+#
+# rules
+#
+%.o : %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%.o : %.cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+%.o : %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+#
+# objects
+#
+ifneq ($(SRC_DIRS),)
+    SRC_FILES += $(shell find $(SRC_DIRS) -name "*.c" -or -name "*.cpp" -or -name "*.cc")
+endif
+ifneq ($(SRC_DIRS_EXCLUDE),)
+    SRC_FILES_EXCLUDE += $(shell find $(SRC_DIRS_EXCLUDE) -name "*.c" -or -name "*.cpp" -or -name "*.cc")
+endif
+SRC_FILES  := $(filter-out $(SRC_FILES_EXCLUDE), $(SRC_FILES))
+
+OBJECTS = $(subst .c,.o,$(subst .cpp,.o,$(subst .cc,.o,$(SRC_FILES))))
+
+#
+# goal all
+#
 .PHONY: all
+all: $(TARGET)
 
-all: 
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(ALL_SRC) $(LDFLAGS) -o $(TARGET)
+$(EXECUTABLE) : $(OBJECTS)
+	$(CXX) $^ $(LDFLAGS) -o $@
 
+#
+# goal: clean
+#
 .PHONY: clean 
 clean:
-	$(RM) $(TARGET) $(OBJS)
+	$(RM) $(TARGET) $(OBJECTS)

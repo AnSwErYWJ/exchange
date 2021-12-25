@@ -1,0 +1,15 @@
+*.o
+
+/*.a
+/*.so
+/exchange
+
+/*.pcm
+/*.wav
+
+*.vcxproj.user
+/vs/.vs
+/vs/*.sdf
+
+/.vscode
+*.DS_Store

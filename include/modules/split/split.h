@@ -1,13 +1,19 @@
 /*************************************************************************
-	> File Name: config.h
+	> File Name: split.h
 	> Author: answer
 	> Mail: yuanweijie1993@gmail.com
-	> Created Time: Tue 22 Nov 2016 11:48:19 AM CST
+	> Created Time: 2021年12月25日 星期六 14时14分49秒
  ************************************************************************/
 
-#ifndef _CONFIG_H
-#define _CONFIG_H
+#ifndef __SPLIT__H
+#define __SPLIT__H
 
-#define LENGTH sizeof(short int) // Encoding:Signed 16 bit PCM, 2 bytes.
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

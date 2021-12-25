@@ -1,6 +1,6 @@
 /*************************************************************************
 	> File Name: channel_convert.c
-	> Author: weijie.yuan
+	> Author: answer
 	> Mail: yuanweijie1993@gmail.com
 	> Created Time: Wed 16 Nov 2016 10:08:06 AM CST
  ************************************************************************/
